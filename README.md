@@ -59,3 +59,9 @@ This ensures **only one patient can book a slot**, even under concurrent request
 ### 5. Create superuser
 ### 6. Run server
 
+## Author
+
+**Rajiv Sharma**  
+BCA Student | Aspiring Backend Developer
+
+
