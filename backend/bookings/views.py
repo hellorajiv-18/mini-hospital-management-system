@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from users import decorators
+from django.db import transaction
+from users.decorators import patient_required
 
 # from users.decorators import doctor_required
 from .models import AvailabilitySlot
@@ -37,3 +39,29 @@ def doctor_slots(request):
     )
 
     return render(request, 'bookings/doctor_slots.html', {'slots': slots})
+
+
+@login_required
+@patient_required
+def available_slots(request):
+    slots = AvailabilitySlot.objects.filter(
+        is_booked=False,
+        date__gte=timezone.now().date()
+    ).select_related('doctor')
+
+    return render(request, 'bookings/available_slots.html', {'slots': slots})
+
+
+@login_required
+@patient_required
+def book_slot(request, slot_id):
+    with transaction.atomic():
+        slot = AvailabilitySlot.objects.select_for_update().get(id=slot_id)
+
+        if slot.is_booked:
+            return render(request, 'bookings/already_booked.html')
+
+        slot.is_booked = True
+        slot.save()
+
+    return render(request, 'bookings/booking_success.html', {'slot': slot})

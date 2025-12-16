@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available Slots</title>
+</head>
+<body>
+
+<h2>Available Doctor Slots</h2>
+
+<table border="1">
+    <tr>
+        <th>Doctor</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Action</th>
+    </tr>
+
+    {% for slot in slots %}
+    <tr>
+        <td>{{ slot.doctor.username }}</td>
+        <td>{{ slot.date }}</td>
+        <td>{{ slot.start_time }} - {{ slot.end_time }}</td>
+        <td>
+            <a href="{% url 'book-slot' slot.id %}">Book</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4">No slots available</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

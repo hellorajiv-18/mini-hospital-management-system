@@ -1,16 +1,21 @@
-from django.core.exceptions import PermissionDenied
-
-def doctor_required(view_func):
-    def wrapper(request, *args, **kwargs):
-        if not request.user.is_authenticated or request.user.role != 'DOCTOR':
-            raise PermissionDenied
-        return view_func(request, *args, **kwargs)
-    return wrapper
+from django.http import HttpResponseForbidden
+from functools import wraps
 
 
 def patient_required(view_func):
-    def wrapper(request, *args, **kwargs):
-        if not request.user.is_authenticated or request.user.role != 'PATIENT':
-            raise PermissionDenied
-        return view_func(request, *args, **kwargs)
-    return wrapper
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.role == 'PATIENT':
+            return view_func(request, *args, **kwargs)
+        return HttpResponseForbidden()
+    return _wrapped_view
+
+
+def doctor_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.role == 'DOCTOR':
+            return view_func(request, *args, **kwargs)
+        return HttpResponseForbidden()
+    return _wrapped_view
+
