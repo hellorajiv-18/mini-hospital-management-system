@@ -1,31 +1,4 @@
-{% comment %} <!DOCTYPE html>
-<html>
-<head>
-    <title>Add Availability</title>
-</head>
-<body>
 
-<h2>Add Availability Slot</h2>
-
-<form method="post">
-    {% csrf_token %}
-    <label>Date:</label>
-    <input type="date" name="date" required><br><br>
-
-    <label>Start Time:</label>
-    <input type="time" name="start_time" required><br><br>
-
-    <label>End Time:</label>
-    <input type="time" name="end_time" required><br><br>
-
-    <button type="submit">Add Slot</button>
-</form>
-
-<br>
-<a href="/doctor/slots/">View My Slots</a>
-
-</body>
-</html> {% endcomment %}
 
 <!DOCTYPE html>
 <html>
@@ -43,7 +16,7 @@
                 <h3>Add Availability Slot</h3>
                 <div>
                     <a href="/doctor/slots/" class="btn btn-secondary btn-sm">My Slots</a>
-                    <a href="/accounts/logout/" class="btn btn-danger btn-sm">Logout</a>
+                    <a href="/accounts/login/" class="btn btn-danger btn-sm">Logout</a>
                 </div>
             </div>
 
